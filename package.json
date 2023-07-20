@@ -1,0 +1,10 @@
+{
+  "name": "vsky",
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "pnpm run --filter client dev",
+    "build": "pnpm run --filter client build",
+    "lint": "pnpm run --filter client lint",
+    "lint:fix": "pnpm run --filter client lint:fix"
+  }
+}
