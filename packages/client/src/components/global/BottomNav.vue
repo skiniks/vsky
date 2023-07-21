@@ -29,9 +29,9 @@ onUnmounted(() => {
     <RouterLink to="/" aria-label="Home">
       <div class="i-carbon-home text-gray-300 text-3xl" />
     </RouterLink>
-    <RouterLink to="/notifications" aria-label="Notifications">
+    <!-- <RouterLink to="/notifications" aria-label="Notifications">
       <div class="i-carbon-notification text-gray-300 text-3xl" />
-    </RouterLink>
+    </RouterLink> -->
     <RouterLink :to="`/profile/${userHandle}`" aria-label="Profile">
       <div class="i-carbon-user text-gray-300 text-3xl" />
     </RouterLink>
