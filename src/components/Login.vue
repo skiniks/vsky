@@ -86,3 +86,9 @@ async function handleSubmit() {
     </div>
   </div>
 </template>
+
+<style scoped>
+button[type="submit"] {
+    @apply bg-blue-600 hover:bg-blue-700;
+}
+</style>
