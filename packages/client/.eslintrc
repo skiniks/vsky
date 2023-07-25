@@ -1,6 +1,0 @@
-{
-  "extends": "@antfu",
-  "rules": {
-    "antfu/no-const-enum": "off"
-  }
-}
