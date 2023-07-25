@@ -1,10 +1,24 @@
 {
   "name": "vsky",
-  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "dev": "pnpm run --filter client dev",
-    "build": "pnpm run --filter client build",
-    "lint": "pnpm run --filter client lint",
-    "lint:fix": "pnpm run --filter client lint:fix"
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^0.39.8",
+    "@atproto/api": "^0.4.3",
+    "@nuxt/image": "1.0.0-rc.1",
+    "@types/node": "^20.4.4",
+    "@unocss/nuxt": "^0.53.6",
+    "@unocss/reset": "^0.53.6",
+    "eslint": "^8.45.0",
+    "nuxt": "^3.6.5",
+    "unocss-preset-daisy": "^6.0.0"
   }
 }
