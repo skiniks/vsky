@@ -7,6 +7,10 @@ export default defineNuxtConfig({
     },
   },
 
+  build: {
+    transpile: ['@atproto/api'],
+  },
+
   css: ['@unocss/reset/tailwind.css'],
 
   modules: [
