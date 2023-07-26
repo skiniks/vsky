@@ -6,45 +6,9 @@ defineProps({
 
 <template>
   <li v-if="post" class="bg-white text-black rounded-3xl shadow-lg p-6 mb-4">
-    <!-- Display author details -->
-    <div class="flex items-center">
-      <img :src="post.post.author.avatar" class="w-18 h-18 rounded-full">
-      <div class="flex flex-col ml-4">
-        <div class="text-xl font-bold font-mono">
-          {{ post.post.author.displayName }}
-        </div>
-        <div class="text-gray-400 font-mono">
-          {{ post.post.author.handle }}
-        </div>
-        <div class="text-gray-400 text-xs">
-          {{ getElapsedTime(post.post.record.createdAt) }}
-        </div>
-      </div>
-    </div>
-
-    <div v-if="(post.post.record as any).reply" class="text-gray-500 text-sm mt-4 mb-2">
-      Reply to {{ post.reply.parent.author.displayName }}
-    </div>
-
-    <!-- Display post text -->
-    <div :class="{ 'mt-4': !(post.post.record as any).reply }" class="font-mono text-lg">
-      {{ post.post.record.text }}
-    </div>
-
-    <!-- Display post images if available -->
-    <div v-if="post.post.embed && post.post.embed.images && post.post.embed.images.length > 0">
-      <div v-if="post.post.embed.images.length === 1" class="mt-4 image-container">
-        <img
-          :src="post.post.embed.images[0].thumb" :alt="post.post.embed.images[0].alt"
-          class="w-full  "
-        >
-      </div>
-      <div v-else class="grid grid-cols-2 gap-4">
-        <div v-for="image in post.post.embed.images" :key="image.thumb" class="mt-4 image-container">
-          <img :src="image.thumb" :alt="image.alt" class="w-full  ">
-        </div>
-      </div>
-    </div>
+    <AuthorDetail :author="post.post.author" :timestamp="getElapsedTime(post.post.record.createdAt)" :post="post" />
+    <PostText :text="post.post.record.text" :reply="post.post.record.reply" />
+    <PostImages :post="post" />
 
     <div v-if="post.post.embed?.external" class="mt-4">
       <div class="p-4 border-2 border-gray-500 rounded-3xl">
@@ -90,20 +54,7 @@ defineProps({
       </div>
     </div>
 
-    <!-- repost with media -->
-    <div
-      v-if="post.post && post.post.embed && post.post.embed.media && post.post.embed.media.images && post.post.embed.media.images.length > 0"
-      :class="{ 'grid grid-cols-2 gap-4': post.post.embed.media.images.length > 1 }"
-    >
-      <div v-for="(image, index) in post.post.embed.media.images" :key="index">
-        <div class="image-container">
-          <img
-            :src="image.thumb" :alt="image.alt"
-            class="w-full   mt-4"
-          >
-        </div>
-      </div>
-    </div>
+    <RepostWithMedia :post="post" />
 
     <div v-if="post.post.embed?.record?.record" class="mt-4 p-8 border-2 border-gray-500 ">
       <div>
@@ -128,25 +79,7 @@ defineProps({
       </div>
     </div>
 
-    <!-- Display repost information if available -->
-    <div v-if="post.reason" class="mt-4">
-      <div class="text-gray-400 mb-2 font-mono text-sm">
-        Reposted by
-      </div>
-      <div class="flex items-center">
-        <div>
-          <img :src="post.reason.by.avatar" class="w-10 h-10 rounded-full">
-        </div>
-        <div class="flex flex-col ml-2">
-          <div class="font-mono text-sm">
-            {{ post.reason.by.displayName }}
-          </div>
-          <div class="text-gray-400 text-xs font-mono">
-            {{ post.reason.by.handle }}
-          </div>
-        </div>
-      </div>
-    </div>
+    <RepostInfo :reason="post.reason" />
   </li>
 </template>
 
