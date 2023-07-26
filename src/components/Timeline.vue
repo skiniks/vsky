@@ -68,10 +68,10 @@ async function fetchTimeline(cursorValue?: string | null) {
         <div class="flex items-center">
           <img :src="post.post.author.avatar" class="w-18 h-18 rounded-full">
           <div class="flex flex-col ml-4">
-            <div class="text-xl font-bold  font-mono">
+            <div class="text-xl font-bold font-mono">
               {{ post.post.author.displayName }}
             </div>
-            <div class="text-gray-400  font-mono">
+            <div class="text-gray-400 font-mono">
               {{ post.post.author.handle }}
             </div>
             <div class="text-gray-400 text-xs">
@@ -118,18 +118,20 @@ async function fetchTimeline(cursorValue?: string | null) {
         </div>
 
         <div v-if="post.post.embed?.record?.value" class="mt-4 p-8 border-2 border-gray-500 rounded-3xl">
-          <div>
+          <div class="flex items-center">
             <div>
               <img :src="post.post.embed.record?.author?.avatar" class="w-10 h-10 rounded-full">
             </div>
-            <div class="text-xl font-bold font-mono">
-              {{ post.post.embed.record?.author?.displayName }}
-            </div>
-            <div class="text-gray-400 font-mono">
-              {{ post.post.embed.record?.author?.handle }}
+            <div class="flex flex-col ml-2">
+              <div class="text-xl font-bold font-mono">
+                {{ post.post.embed.record?.author?.displayName }}
+              </div>
+              <div class="text-gray-400 font-mono">
+                {{ post.post.embed.record?.author?.handle }}
+              </div>
             </div>
           </div>
-          <div class="font-mono">
+          <div class="font-mono mt-2">
             {{ post.post.embed.record?.value?.text }}
           </div>
 
