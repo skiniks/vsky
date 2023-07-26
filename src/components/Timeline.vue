@@ -80,8 +80,12 @@ async function fetchTimeline(cursorValue?: string | null) {
           </div>
         </div>
 
+        <div v-if="(post.post.record as any).reply" class="text-gray-500 text-sm mt-4 mb-2">
+          Reply to {{ post.reply.parent.author.displayName }}
+        </div>
+
         <!-- Display post text -->
-        <div class="mt-4 font-mono text-lg font-mono">
+        <div :class="{ 'mt-4': !(post.post.record as any).reply }" class="font-mono text-lg">
           {{ post.post.record.text }}
         </div>
 
@@ -108,8 +112,8 @@ async function fetchTimeline(cursorValue?: string | null) {
             <div class="text-xl font-bold font-mono">
               {{ post.post.embed.external?.title }}
             </div>
-            <div class="text-gray-400 text-xs font-mono">
-              {{ post.post.embed.external?.uri }}
+            <div class="text-gray-400 text-xs font-monos">
+              {{ post.post.embed.external?.uri.substring(0, 100) + (post.post.embed.external?.uri.length > 100 ? '...' : '') }}
             </div>
             <div class="text-sm font-mono">
               {{ post.post.embed.external?.description }}
