@@ -23,10 +23,13 @@ defineProps({
       {{ record?.value?.text }}
     </div>
 
-    <div v-if="record?.embeds">
-      <div v-for="embed in record.embeds" :key="embed.$type">
-        <div v-for="image in embed.images" :key="image.thumb" class="image-container">
-          <img :src="image.thumb" :alt="image.alt" class="w-full   mt-4">
+    <div v-if="record?.embeds && record?.embeds[0]?.images">
+      <div v-if="record.embeds[0].images.length === 1" class="mt-4 image-container">
+        <img :src="record.embeds[0].images[0].thumb" :alt="record.embeds[0].images[0].alt" class="w-full">
+      </div>
+      <div v-else class="grid grid-cols-2 gap-4">
+        <div v-for="image in record.embeds[0].images" :key="image.thumb" class="mt-4 image-container">
+          <img :src="image.thumb" :alt="image.alt" class="w-full">
         </div>
       </div>
     </div>
