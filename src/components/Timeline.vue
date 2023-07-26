@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BskyAgent } from '@atproto/api'
+import * as AtprotoApi from '@atproto/api'
 import { getElapsedTime } from '@/utils/elapsed-time'
 
 const timelinePosts = ref<Array<any>>([])
@@ -8,7 +8,7 @@ const cursor = ref<string | null>(null)
 const endReached = ref(false)
 const observer = ref<IntersectionObserver | null>(null)
 
-const agent = new BskyAgent({ service: 'https://bsky.social' })
+const agent = new AtprotoApi.BskyAgent({ service: 'https://bsky.social' })
 
 const savedSessionData = localStorage.getItem('sessionData')
 if (savedSessionData)
@@ -87,15 +87,15 @@ async function fetchTimeline(cursorValue?: string | null) {
 
         <!-- Display post images if available -->
         <div v-if="post.post.embed && post.post.embed.images && post.post.embed.images.length > 0">
-          <div v-if="post.post.embed.images.length === 1" class="mt-4">
+          <div v-if="post.post.embed.images.length === 1" class="mt-4 image-container">
             <img
               :src="post.post.embed.images[0].thumb" :alt="post.post.embed.images[0].alt"
-              class="w-full rounded-3xl shadow-lg"
+              class="w-full  "
             >
           </div>
           <div v-else class="grid grid-cols-2 gap-4">
-            <div v-for="image in post.post.embed.images" :key="image.thumb" class="mt-4">
-              <img :src="image.thumb" :alt="image.alt" class="w-full rounded-3xl shadow-lg">
+            <div v-for="image in post.post.embed.images" :key="image.thumb" class="mt-4 image-container">
+              <img :src="image.thumb" :alt="image.alt" class="w-full  ">
             </div>
           </div>
         </div>
@@ -103,7 +103,7 @@ async function fetchTimeline(cursorValue?: string | null) {
         <div v-if="post.post.embed?.external" class="mt-4">
           <div class="p-4 border-2 border-gray-500 rounded-3xl">
             <div v-if="post.post.embed.external?.thumb">
-              <img :src="post.post.embed.external?.thumb" class="w-full rounded-3xl shadow-lg mb-2">
+              <img :src="post.post.embed.external?.thumb" class="w-full   mb-2">
             </div>
             <div class="text-xl font-bold font-mono">
               {{ post.post.embed.external?.title }}
@@ -137,8 +137,8 @@ async function fetchTimeline(cursorValue?: string | null) {
 
           <div v-if="post.post.embed.record?.embeds">
             <div v-for="embed in post.post.embed.record.embeds" :key="embed.$type">
-              <div v-for="image in embed.images" :key="image.thumb">
-                <img :src="image.thumb" :alt="image.alt" class="w-full rounded-3xl shadow-lg mt-4">
+              <div v-for="image in embed.images" :key="image.thumb" class="image-container">
+                <img :src="image.thumb" :alt="image.alt" class="w-full   mt-4">
               </div>
             </div>
           </div>
@@ -147,14 +147,19 @@ async function fetchTimeline(cursorValue?: string | null) {
         <!-- repost with media -->
         <div
           v-if="post.post && post.post.embed && post.post.embed.media && post.post.embed.media.images && post.post.embed.media.images.length > 0"
+          :class="{ 'grid grid-cols-2 gap-4': post.post.embed.media.images.length > 1 }"
         >
-          <img
-            v-for="(image, index) in post.post.embed.media.images" :key="index" :src="image.thumb" :alt="image.alt"
-            class="w-full rounded-3xl shadow-lg mt-4"
-          >
+          <div v-for="(image, index) in post.post.embed.media.images" :key="index">
+            <div class="image-container">
+              <img
+                :src="image.thumb" :alt="image.alt"
+                class="w-full   mt-4"
+              >
+            </div>
+          </div>
         </div>
 
-        <div v-if="post.post.embed?.record?.record" class="mt-4 p-8 border-2 border-gray-500 rounded-3xl">
+        <div v-if="post.post.embed?.record?.record" class="mt-4 p-8 border-2 border-gray-500 ">
           <div>
             <div>
               <img :src="post.post.embed.record?.record?.author?.avatar" class="w-10 h-10 rounded-full">
@@ -201,3 +206,20 @@ async function fetchTimeline(cursorValue?: string | null) {
     <div id="endOfList" class="mb-4" />
   </div>
 </template>
+
+<style scoped>
+.image-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 100%;
+  overflow: hidden;
+}
+.image-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+</style>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import * as AtprotoApi from '@atproto/api'
 import type { AtpSessionData, AtpSessionEvent } from '@atproto/api'
-import { BskyAgent } from '@atproto/api'
 
 const emit = defineEmits(['loginSuccess'])
 
@@ -10,7 +10,8 @@ const error = ref('')
 
 async function handleSubmit() {
   try {
-    const agent = new BskyAgent({
+    const agent = new AtprotoApi.BskyAgent({
+    // const agent = new BskyAgent({
       service: 'https://bsky.social',
       persistSession: (evt: AtpSessionEvent, sess?: AtpSessionData) => {
         // eslint-disable-next-line no-console
@@ -86,9 +87,3 @@ async function handleSubmit() {
     </div>
   </div>
 </template>
-
-<style scoped>
-button[type="submit"] {
-    @apply bg-blue-600 hover:bg-blue-700;
-}
-</style>
