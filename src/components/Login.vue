@@ -75,7 +75,7 @@ async function handleSubmit() {
           <button
             aria-label="Login"
             type="submit"
-            class="btn text-white border-transparent hover:border-transparent bg-blue-600 hover:bg-blue-700"
+            class="btn text-white border-transparent hover:border-transparent"
           >
             Login
           </button>
@@ -87,3 +87,9 @@ async function handleSubmit() {
     </div>
   </div>
 </template>
+
+<style scoped>
+button[type="submit"] {
+    @apply bg-blue-600 hover:bg-blue-700;
+}
+</style>
