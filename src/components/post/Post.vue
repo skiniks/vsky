@@ -12,7 +12,7 @@ defineProps({
     <PostEmbed :images="post.post.embed?.images" />
     <PostEmbedExternal :external="post.post.embed?.external" />
     <PostEmbedRecord :record="post.post.embed?.record" />
-    <PostEmbedRecordWithMedia :images="post.post.embed?.media?.images" />
+    <PostEmbedMedia :images="post.post.embed?.media?.images" />
     <PostRecordEmbedDetail :record="post.post.embed?.record?.record" />
     <PostReason :reason="post.reason" />
   </li>
