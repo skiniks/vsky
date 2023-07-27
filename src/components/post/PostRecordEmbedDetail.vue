@@ -21,10 +21,10 @@ defineProps({
     </div>
     {{ record.value?.text }}
 
-    <div v-for="embed in record.embeds" :key="embed.record?.record?.cid" class="mb-6">
-      <div v-if="embed.media && embed.media.images">
-        <div v-for="image in embed.media.images" :key="image.fullsize">
-          <img :src="image.fullsize" :alt="image.alt" class="mt-4 rounded-md">
+    <div v-for="embed in record.embeds" :key="embed.$type">
+      <div v-if="embed.images">
+        <div v-for="image in embed.images" :key="image.thumb" class="mt-4">
+          <img :src="image.thumb" :alt="image.alt" class="rounded-md">
         </div>
       </div>
     </div>

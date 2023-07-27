@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { RichText } from '@atproto/api'
 import MarkdownIt from 'markdown-it'
+import { truncate } from '@/utils/truncate'
 
 const props = defineProps({
   text: {
@@ -26,8 +27,7 @@ onMounted(async () => {
   let markdown = ''
   for (const segment of rt.segments()) {
     if (segment.isLink()) {
-      // const displayText = truncate(segment.text, 40)
-      const displayText = segment.text
+      const displayText = truncate(segment.text, 40)
       markdown += `[${displayText}](${segment.link?.uri})`
     }
     else if (segment.isMention()) {

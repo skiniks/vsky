@@ -28,8 +28,8 @@ defineProps({
     <div v-if="record?.embeds">
       <div v-for="embed in record?.embeds" :key="embed.$type" class="mb-6">
         <div v-if="embed.$type === 'app.bsky.embed.images#view' && embed.images">
-          <div v-for="image in embed.images" :key="image.fullsize">
-            <img :src="image.fullsize" :alt="image.alt" class="mt-4 rounded-md">
+          <div v-for="image in embed.images" :key="image.thumb">
+            <img :src="image.thumb" :alt="image.alt" class="mt-4 rounded-md">
           </div>
         </div>
       </div>
