@@ -13,11 +13,12 @@
   "devDependencies": {
     "@antfu/eslint-config": "^0.39.8",
     "@atproto/api": "^0.4.3",
-    "@nuxt/image": "1.0.0-rc.1",
-    "@types/node": "^20.4.4",
+    "@nuxt/image": "0.7.1",
+    "@types/node": "^20.4.5",
     "@unocss/nuxt": "^0.53.6",
     "@unocss/reset": "^0.53.6",
     "eslint": "^8.45.0",
+    "markdown-it": "^13.0.1",
     "nuxt": "^3.6.5",
     "unocss-preset-daisy": "^6.0.0"
   }

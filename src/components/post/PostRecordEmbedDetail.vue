@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import type { Record } from '@/types'
+
 defineProps({
-  record: Object,
+  record: Object as () => Record,
 })
 </script>
 

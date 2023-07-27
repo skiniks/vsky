@@ -1,4 +1,4 @@
 <template>
   <Timeline />
-  <Logout />
+  <GlobalLogout />
 </template>

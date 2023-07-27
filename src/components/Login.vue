@@ -11,7 +11,6 @@ const error = ref('')
 async function handleSubmit() {
   try {
     const agent = new AtprotoApi.BskyAgent({
-    // const agent = new BskyAgent({
       service: 'https://bsky.social',
       persistSession: (evt: AtpSessionEvent, sess?: AtpSessionData) => {
         // eslint-disable-next-line no-console

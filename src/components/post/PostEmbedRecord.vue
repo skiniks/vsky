@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import type { Record } from '@/types'
+
 defineProps({
-  record: Object,
+  record: Object as () => Record,
 })
 </script>
 
@@ -24,9 +26,9 @@ defineProps({
     </div>
 
     <div v-if="record?.embeds">
-      <div v-for="embed in record?.embeds" :key="embed.record?.record?.cid" class="mb-6">
-        <div v-if="embed.media && embed.media.images">
-          <div v-for="image in embed.media.images" :key="image.fullsize">
+      <div v-for="embed in record?.embeds" :key="embed.$type" class="mb-6">
+        <div v-if="embed.$type === 'app.bsky.embed.images#view' && embed.images">
+          <div v-for="image in embed.images" :key="image.fullsize">
             <img :src="image.fullsize" :alt="image.alt" class="mt-4 rounded-md">
           </div>
         </div>

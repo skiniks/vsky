@@ -9,11 +9,18 @@ const observer = ref<IntersectionObserver | null>(null)
 
 const agent = new AtprotoApi.BskyAgent({ service: 'https://bsky.social' })
 
+function isJwtExpired(jwt: string): boolean {
+  const [, payload] = jwt.split('.')
+  const { exp } = JSON.parse(atob(payload))
+  return Date.now() >= exp * 1000
+}
+
 const savedSessionData = localStorage.getItem('sessionData')
 if (savedSessionData)
   await agent.resumeSession(JSON.parse(savedSessionData))
 
 onMounted(async () => {
+  await refreshTokenIfNeeded()
   await fetchTimeline()
 
   observer.value = new IntersectionObserver(async (entries) => {
@@ -24,7 +31,28 @@ onMounted(async () => {
   })
 
   observer.value.observe(document.querySelector('#endOfList')!)
+
+  loading.value = false
 })
+
+async function refreshTokenIfNeeded() {
+  const session = localStorage.getItem('sessionData')
+  if (!session)
+    return
+
+  const { accessJwt, refreshJwt } = JSON.parse(session)
+  const isAccessTokenExpired = isJwtExpired(accessJwt)
+
+  if (isAccessTokenExpired) {
+    try {
+      const response = await agent.resumeSession(refreshJwt)
+      localStorage.setItem('sessionData', JSON.stringify(response.data))
+    }
+    catch (error) {
+      console.error('Failed to refresh token:', error)
+    }
+  }
+}
 
 async function fetchTimeline(cursorValue?: string | null) {
   try {
@@ -62,7 +90,7 @@ async function fetchTimeline(cursorValue?: string | null) {
 <template>
   <div>
     <ul class="mt-4">
-      <Post v-for="post in timelinePosts" :key="post.post.cid" :post="post" />
+      <Post v-for="post in timelinePosts" :key="post.post.cid" :post="post" :agent="agent" />
     </ul>
     <div id="endOfList" class="mb-4" />
   </div>
