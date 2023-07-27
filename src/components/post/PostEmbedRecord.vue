@@ -7,7 +7,7 @@ defineProps({
 </script>
 
 <template>
-  <div v-if="record?.value" class="mt-4 p-8 border-2 border-gray-500 rounded-3xl">
+  <div v-if="record?.value" class="mt-4 p-8 border-2 border-blue rounded-3xl shadow-lg shadow-blue-500/50 ">
     <div class="flex items-center">
       <div>
         <img :src="record?.author?.avatar" class="w-10 h-10 rounded-full">
