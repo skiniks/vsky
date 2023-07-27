@@ -20,5 +20,9 @@ export default defineNuxtConfig({
     },
   },
 
+  dir: {
+    pages: 'views',
+  },
+
   srcDir: 'src',
 })
