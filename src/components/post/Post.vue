@@ -1,19 +1,26 @@
 <script setup lang="ts">
-defineProps({
+import { getElapsedTime } from '~/utils/elapsed-time'
+
+const props = defineProps({
   post: Object,
   agent: Object,
 })
+
+const nuxtApp = useNuxtApp()
+const bskyAgent = nuxtApp.$bskyAgent
+const currentPost = computed(() => props.post?.post)
+const postTimestamp = computed(() => getElapsedTime(currentPost.value.record.createdAt))
 </script>
 
 <template>
-  <li v-if="post" class="bg-white text-black rounded-3xl shadow-lg p-6 mb-4">
-    <PostHeader :author="post.post.author" :timestamp="getElapsedTime(post.post.record.createdAt)" :post="post" />
-    <PostText :text="post.post.record.text" :reply="post.post.record.reply" :agent="agent" />
-    <PostEmbed :images="post.post.embed?.images" />
-    <PostEmbedExternal :external="post.post.embed?.external" />
-    <PostEmbedRecord :record="post.post.embed?.record" />
-    <PostEmbedMedia :images="post.post.embed?.media?.images" />
-    <PostRecordEmbedDetail :record="post.post.embed?.record?.record" />
-    <PostReason :reason="post.reason" />
+  <li class="bg-white text-black rounded-3xl shadow-lg p-6 mb-4">
+    <PostHeader :author="currentPost?.author" :timestamp="postTimestamp" :post="post" />
+    <PostText :text="currentPost?.record?.text" :agent="bskyAgent" />
+    <PostEmbed :images="currentPost?.embed?.images" />
+    <PostEmbedExternal :external="currentPost?.embed?.external" />
+    <PostEmbedMedia :images="currentPost?.embed?.media?.images" />
+    <PostEmbedRecord :record="currentPost?.embed?.record" />
+    <PostEmbedRecordNested :record="currentPost?.embed?.record?.record" />
+    <PostReason :reason="post?.reason" />
   </li>
 </template>

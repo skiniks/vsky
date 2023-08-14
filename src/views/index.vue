@@ -1,4 +1,0 @@
-<template>
-  <Timeline />
-  <Logout />
-</template>

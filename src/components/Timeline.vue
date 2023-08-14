@@ -1,72 +1,33 @@
 <script setup lang="ts">
-import * as AtprotoApi from '@atproto/api'
+import { useSessionStore } from '~/stores/session'
 
-const timelinePosts = ref<Array<any>>([])
+const nuxtApp = useNuxtApp()
+const bskyAgent = nuxtApp.$bskyAgent
+const sessionStore = useSessionStore()
+
+const timelineData = ref<Array<any>>([])
 const loading = ref(false)
 const cursor = ref<string | null>(null)
 const endReached = ref(false)
 const observer = ref<IntersectionObserver | null>(null)
 
-const agent = new AtprotoApi.BskyAgent({ service: 'https://bsky.social' })
-
-function isJwtExpired(jwt: string): boolean {
-  const [, payload] = jwt.split('.')
-  const { exp } = JSON.parse(atob(payload))
-  return Date.now() >= exp * 1000
-}
-
-const savedSessionData = localStorage.getItem('sessionData')
-if (savedSessionData)
-  await agent.resumeSession(JSON.parse(savedSessionData))
-
-onMounted(async () => {
-  await refreshTokenIfNeeded()
-  await fetchTimeline()
-
-  observer.value = new IntersectionObserver(async (entries) => {
-    if (entries[0].isIntersecting && !loading.value)
-      await fetchTimeline(cursor.value)
-  }, {
-    rootMargin: '200px 0px',
-  })
-
-  observer.value.observe(document.querySelector('#endOfList')!)
-
-  loading.value = false
-})
-
-async function refreshTokenIfNeeded() {
-  const session = localStorage.getItem('sessionData')
-  if (!session)
-    return
-
-  const { accessJwt, refreshJwt } = JSON.parse(session)
-  const isAccessTokenExpired = isJwtExpired(accessJwt)
-
-  if (isAccessTokenExpired) {
-    try {
-      const response = await agent.resumeSession(refreshJwt)
-      localStorage.setItem('sessionData', JSON.stringify(response.data))
-    }
-    catch (error) {
-      console.error('Failed to refresh token:', error)
-    }
-  }
-}
-
-async function fetchTimeline(cursorValue?: string | null) {
+async function fetchData(cursorValue?: string | null) {
   try {
     loading.value = true
+    const savedSessionData = sessionStore.getSession()
+
+    if (savedSessionData)
+      await bskyAgent.resumeSession(savedSessionData)
 
     const response = cursorValue === null
-      ? await agent.getTimeline({ limit: 50 })
-      : await agent.getTimeline({ cursor: cursorValue, limit: 50 })
+      ? await bskyAgent.getTimeline({ limit: 50 })
+      : await bskyAgent.getTimeline({ cursor: cursorValue, limit: 50 })
 
     const filteredPosts = response.data.feed.filter(post => !(post.post.record as any).reply || post.reason)
 
-    timelinePosts.value = [...timelinePosts.value, ...filteredPosts]
+    timelineData.value = [...timelineData.value, ...filteredPosts]
     // eslint-disable-next-line no-console
-    console.log('timelinePosts:', timelinePosts.value)
+    console.log('Timeline data:', timelineData.value)
 
     if (response.data.cursor) {
       cursor.value = response.data.cursor
@@ -78,19 +39,39 @@ async function fetchTimeline(cursorValue?: string | null) {
         observer.value.unobserve(document.querySelector('#endOfList')!)
     }
   }
-  catch (error) {
-    console.error('Error fetching timeline:', error)
+  catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('Failed:', error.message)
+      if (error.message.includes('Authentication Required'))
+        sessionStore.clearSession()
+    }
+    else {
+      console.error('An unexpected error occurred:', error)
+    }
   }
   finally {
     loading.value = false
   }
 }
+
+onMounted(() => {
+  fetchData()
+
+  observer.value = new IntersectionObserver(async (entries) => {
+    if (entries[0].isIntersecting && !loading.value)
+      await fetchData(cursor.value)
+  }, {
+    rootMargin: '200px 0px',
+  })
+
+  observer.value.observe(document.querySelector('#endOfList')!)
+})
 </script>
 
 <template>
   <div>
     <ul class="mt-4">
-      <Post v-for="post in timelinePosts" :key="post.post.cid" :post="post" :agent="agent" />
+      <Post v-for="post in timelineData" :key="post.post.record.cid" :post="post" :agent="bskyAgent" />
     </ul>
     <div id="endOfList" class="mb-4" />
   </div>

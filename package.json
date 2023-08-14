@@ -1,5 +1,5 @@
 {
-  "name": "vsky",
+  "name": "nuxt-app",
   "private": true,
   "scripts": {
     "build": "nuxt build",
@@ -13,14 +13,15 @@
   "devDependencies": {
     "@antfu/eslint-config": "^0.39.8",
     "@atproto/api": "^0.4.3",
-    "@nuxt/image": "1.0.0-rc.1",
+    "@nuxt/devtools": "latest",
+    "@pinia/nuxt": "^0.4.11",
     "@types/markdown-it": "^12.2.3",
-    "@types/node": "^20.4.5",
-    "@unocss/nuxt": "^0.53.6",
-    "@unocss/reset": "^0.53.6",
-    "eslint": "^8.45.0",
+    "@types/node": "^18.17.1",
+    "@unocss/nuxt": "^0.54.1",
+    "eslint": "^8.46.0",
     "markdown-it": "^13.0.1",
     "nuxt": "^3.6.5",
+    "pinia": "^2.1.6",
     "unocss-preset-daisy": "^6.0.0"
   }
 }

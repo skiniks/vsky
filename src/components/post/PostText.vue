@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { RichText } from '@atproto/api'
-import MarkdownIt from 'markdown-it'
-import { truncate } from '@/utils/truncate'
+import { useRichText } from '~/composables/useRichText'
 
 const props = defineProps({
   text: {
@@ -16,31 +14,7 @@ const props = defineProps({
   },
 })
 
-const { text, agent } = props
-
-const htmlText = ref('')
-
-onMounted(async () => {
-  const rt = new RichText({ text })
-  await rt.detectFacets(agent)
-
-  let markdown = ''
-  for (const segment of rt.segments()) {
-    if (segment.isLink()) {
-      const displayText = truncate(segment.text, 40)
-      markdown += `[${displayText}](${segment.link?.uri})`
-    }
-    else if (segment.isMention()) {
-      markdown += `[${segment.text}](https://bsky.app/profile/${segment.mention?.did})`
-    }
-    else {
-      markdown += segment.text
-    }
-  }
-
-  const md = new MarkdownIt()
-  htmlText.value = md.render(markdown)
-})
+const { htmlText } = useRichText(props.text, props.agent)
 </script>
 
 <template>

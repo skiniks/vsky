@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import type { Image } from '@/types'
-
 defineProps({
-  images: Array as () => Image[],
+  images: Array as PropType<Array<any>>,
 })
 </script>
 

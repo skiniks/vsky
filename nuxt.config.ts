@@ -1,28 +1,13 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  app: {
-    head: {
-      htmlAttrs: { lang: 'en' },
-      title: 'vSky',
-    },
-  },
-
+  devtools: { enabled: true },
   css: ['@unocss/reset/tailwind.css', '@/assets/main.css'],
-
   modules: [
     '@unocss/nuxt',
-    '@nuxt/image',
+    '@pinia/nuxt',
   ],
-
-  nitro: {
-    future: {
-      nativeSWR: true,
-    },
-  },
-
-  dir: {
-    pages: 'views',
-  },
-
+  plugins: [
+    '~/plugins/bsky-agent.ts',
+  ],
   srcDir: 'src',
 })

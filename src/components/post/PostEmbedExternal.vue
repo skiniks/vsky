@@ -6,7 +6,7 @@ defineProps({
 
 <template>
   <div v-if="external" class="mt-4">
-    <div class="p-4 border-2 border-blue rounded-3xl shadow-lg shadow-blue-500/50">
+    <div class="p-4 border-2 border-blue rounded-3xl shadow-md shadow-blue-500/50">
       <div v-if="external?.thumb">
         <img :src="external?.thumb" class="w-full   mb-2">
       </div>
