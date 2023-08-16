@@ -10,6 +10,17 @@ const nuxtApp = useNuxtApp()
 const bskyAgent = nuxtApp.$bskyAgent
 const currentPost = computed(() => props.post?.post)
 const postTimestamp = computed(() => getElapsedTime(currentPost.value.record.createdAt))
+
+const likeUri = ref(props.post?.post?.viewer?.like)
+const repostUri = ref(props.post?.post?.viewer?.repost)
+
+function handleLikeToggled(newLikeUri: string | null) {
+  likeUri.value = newLikeUri
+}
+
+function handleRepostToggled(newRepostUri: string | null) {
+  repostUri.value = newRepostUri
+}
 </script>
 
 <template>
@@ -22,5 +33,15 @@ const postTimestamp = computed(() => getElapsedTime(currentPost.value.record.cre
     <PostEmbedRecord :record="currentPost?.embed?.record" />
     <PostEmbedRecordNested :record="currentPost?.embed?.record?.record" />
     <PostReason :reason="post?.reason" />
+    <PostActions
+      :post="currentPost"
+      :post-cid="currentPost?.cid"
+      :post-uri="currentPost?.uri"
+      :like-uri="likeUri"
+      :repost-uri="repostUri"
+      :agent="bskyAgent"
+      @likeToggled="handleLikeToggled"
+      @repostToggled="handleRepostToggled"
+    />
   </li>
 </template>
