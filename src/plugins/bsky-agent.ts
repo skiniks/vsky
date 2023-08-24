@@ -1,4 +1,5 @@
-import * as api from '@atproto/api'
+import { BskyAgent } from '@atproto/api'
+
 import { useSessionStore } from '~/stores/session'
 
 export default defineNuxtPlugin({
@@ -6,7 +7,7 @@ export default defineNuxtPlugin({
   async setup() {
     const sessionStore = useSessionStore()
 
-    const agent = new api.BskyAgent({
+    const agent = new BskyAgent({
       service: 'https://bsky.social',
       persistSession: (_evt, sess) => {
         sessionStore.setSession(sess)

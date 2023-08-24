@@ -7,7 +7,7 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
   ],
   plugins: [
-    '~/plugins/bsky-agent.ts',
+    { src: '~/plugins/bsky-agent.ts', mode: 'client' },
   ],
   srcDir: 'src',
 })
