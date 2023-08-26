@@ -91,11 +91,12 @@ async function toggleRepost() {
 
 <template>
   <div class="flex items-center justify-end space-x-4 mt-4">
-    <div :class="{ 'text-gray-500': !isLiked, 'text-red-500': isLiked }" @click="toggleLike">
-      <div class="i-carbon-favorite text-xl" />
-    </div>
     <div :class="{ 'text-gray-500': !isReposted, 'text-green-500': isReposted }" @click="toggleRepost">
-      <div class="i-carbon-repeat text-xl" />
+      <div class="i-carbon-repeat text-2xl" />
+    </div>
+    <div :class="{ 'text-gray-500': !isLiked, 'text-red-500': isLiked }" @click="toggleLike">
+      <div v-if="isLiked" class="i-carbon-favorite-filled text-2xl" />
+      <div v-else class="i-carbon-favorite text-2xl" />
     </div>
   </div>
 </template>
