@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useSessionStore } from '~/stores/session'
+import { useSessionStore } from '@/stores/session'
 
 const isLoggedIn = ref(false)
 const isLoading = ref(true)

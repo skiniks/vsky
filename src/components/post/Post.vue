@@ -24,9 +24,23 @@ function handleRepostToggled(newRepostUri: string | null) {
 </script>
 
 <template>
-  <li class="bg-white text-black rounded-3xl shadow-lg p-6 mb-4">
+  <li class="list-none bg-white text-black rounded-3xl shadow-lg p-6 mb-4">
     <PostHeader :author="currentPost?.author" :timestamp="postTimestamp" :post="post" />
     <PostText :text="currentPost?.record?.text" :agent="bskyAgent" />
+
+    <!-- sharing a feed -->
+    <div v-if="post?.post?.embed?.record" class="flex mt-4 mb-4">
+      <img v-if="post?.post?.embed?.record?.avatar" :src="post?.post?.embed?.record?.avatar" class="h-12 w-12">
+      <div class="flex-col ml-2 font-mono">
+        <div>
+          {{ post?.post?.embed?.record?.displayName }}
+        </div>
+        <div v-if="post?.post?.embed?.record?.creator?.handle">
+          by {{ post?.post?.embed?.record?.creator?.handle }}
+        </div>
+      </div>
+    </div>
+
     <PostEmbed :images="currentPost?.embed?.images" />
     <PostEmbedExternal :external="currentPost?.embed?.external" />
     <PostEmbedMedia :images="currentPost?.embed?.media?.images" />
