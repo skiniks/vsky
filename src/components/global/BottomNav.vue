@@ -3,6 +3,7 @@ import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import type { RouteLocationNormalizedLoaded } from 'vue-router'
 
+const isLoggedIn = ref(false)
 const router = useRouter()
 const slug = ref<string | null>(null)
 const userHandle = ref<string | null>(null)
@@ -15,6 +16,7 @@ onMounted(async () => {
   if (sessionData) {
     const parsedSession = JSON.parse(sessionData)
     userHandle.value = parsedSession.handle
+    isLoggedIn.value = true // User is logged in since session data exists
   }
 })
 
@@ -24,7 +26,8 @@ function handleRouteChange(to: RouteLocationNormalizedLoaded) {
 </script>
 
 <template>
-  <div class="btm-nav">
+  <div v-if="isLoggedIn" class="btm-nav">
+    <!-- Only render the nav if user is logged in -->
     <NuxtLink to="/">
       <button class="active">
         <div class="i-carbon-home w-10 h-10" />
