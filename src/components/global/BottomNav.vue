@@ -30,17 +30,17 @@ function handleRouteChange(to: RouteLocationNormalizedLoaded) {
     <!-- Only render the nav if user is logged in -->
     <NuxtLink to="/">
       <button class="active">
-        <div class="i-carbon-home w-10 h-10" />
+        <div class="i-carbon-home w-10 h-10 text-white" />
       </button>
     </NuxtLink>
     <NuxtLink to="/notifications">
       <button>
-        <div class="i-carbon-notification w-10 h-10" />
+        <div class="i-carbon-notification w-10 h-10 text-white" />
       </button>
     </NuxtLink>
     <NuxtLink :to="`/profile/${userHandle}`">
       <button>
-        <div class="i-carbon-user-avatar w-10 h-10" />
+        <div class="i-carbon-user-avatar w-10 h-10 text-white" />
       </button>
     </NuxtLink>
   </div>
