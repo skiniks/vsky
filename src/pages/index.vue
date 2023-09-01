@@ -7,9 +7,14 @@ const sessionStore = useSessionStore()
 
 onMounted(() => {
   const storedSession = localStorage.getItem('session')
-  if (storedSession) {
-    sessionStore.setSession(JSON.parse(storedSession))
-    isLoggedIn.value = true
+  if (storedSession && storedSession !== 'undefined') {
+    try {
+      sessionStore.setSession(JSON.parse(storedSession))
+      isLoggedIn.value = true
+    }
+    catch (e) {
+      console.error('Error parsing stored session:', e)
+    }
   }
   isLoading.value = false
 })

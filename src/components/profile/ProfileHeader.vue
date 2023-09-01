@@ -26,6 +26,9 @@ const { profile } = defineProps({
         <div class="text-md font-normal">
           <span class="text-blue-600">@</span>{{ profile.handle }}
         </div>
+        <div class="text-md font-normal">
+          {{ profile.did }}
+        </div>
         <div class="text-md font-normal mt-4 break-words" v-html="profile.description" />
       </div>
     </div>
